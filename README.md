@@ -41,7 +41,7 @@ import org.scala_tools.time.Imports._
 import jp.t2v.util.locale.Holidays
 
 Holidays(new LocalDate(2012, 9, 22))  // Some("秋分の日")
-Holidays(new LocalDate(2012, 5,  6))  // Some("振替休日")
+Holidays(new LocalDate(2009, 5,  6))  // Some("振替休日")
 Holidays(new LocalDate(2012, 9, 10))  // None
 ```
 

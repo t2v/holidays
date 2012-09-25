@@ -15,7 +15,7 @@ resolvers += "t2v.jp repo" at "http://www.t2v.jp/maven-repo/"
 ```
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "1.0"
+libraryDependencies += "jp.t2v" % "holidays_2.9.2" % "1.0"
 ```
 
 # 使い方

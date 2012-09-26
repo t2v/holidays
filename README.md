@@ -1,6 +1,6 @@
 # 祝日計算 in Scala [![Build Status](https://secure.travis-ci.org/t2v/holidays.png)](http://travis-ci.org/t2v/holidays)
 
-http://www.h3.dion.ne.jp/~sakatsu/index.htm の Scala 移植版です。
+http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
 # 依存ライブラリ
 

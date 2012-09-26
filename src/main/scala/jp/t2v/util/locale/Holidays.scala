@@ -133,5 +133,9 @@ object Holidays extends (LocalDate => Option[String]) {
     }
     holidayName(target) orElse substitute(target)
   }
+  
+  def unapply(d: LocalDate): Option[String] = apply(d)
+
+  def unapply(d: DateTime): Option[String] = apply(d.toLocalDate)
 
 }

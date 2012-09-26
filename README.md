@@ -4,7 +4,7 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
 # 依存ライブラリ
 
-- scala-time
+- scala-time https://github.com/jorgeortiz85/scala-time
 
 # 導入
 
@@ -43,6 +43,24 @@ import jp.t2v.util.locale.Holidays
 Holidays(new LocalDate(2012, 9, 22))  // Some("秋分の日")
 Holidays(new LocalDate(2009, 5,  6))  // Some("振替休日")
 Holidays(new LocalDate(2012, 9, 10))  // None
+```
+
+## パターンマッチにも
+
+```scala
+import org.scala_tools.time.Imports._
+import jp.t2v.util.locale.Holidays
+
+val start = new LocalDate(2012, 4, 28)
+val end = new LocalDate(2012, 5, 6)
+val days: Seq[LocalDate] = Stream.iterate(start)(_ + 1.day).takeWhile(end >)
+
+val names = days.map {
+  case Holidays(name) => name
+  case _              => "平日"
+}
+
+names == Seq("平日", "昭和の日", "振替休日", "平日", "平日", "憲法記念日", "みどりの日", "こどもの日")
 ```
 
 # Copyright

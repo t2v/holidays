@@ -32,4 +32,42 @@ class HolidaysSpec extends FlatSpec with ShouldMatchers {
     new LocalDate(2009,  5,  6).holidayName should equal (Some("振替休日"))
   }
 
+  implicit def wrapString(s: String) = new {
+    def dt: DateTime = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").parseDateTime(s)
+    def ld: LocalDate = DateTimeFormat.forPattern("yyyy/MM/dd").parseLocalDate(s)
+  }
+
+  "Holidays extractor" should "extract holiday name" in {
+    val d = Seq(
+      "2012/04/28".ld,
+      "2012/04/29".ld,
+      "2012/04/30".ld,
+      "2012/05/01".ld,
+      "2012/05/02".ld,
+      "2012/05/03".ld,
+      "2012/05/04".ld,
+      "2012/05/05".ld,
+      "2012/05/06".ld
+    )
+
+    val actual = d map {
+      case Holidays(name) => name
+      case _              => "平日"
+    }
+    
+    val expected = Seq(
+      "平日",
+      "昭和の日",
+      "振替休日",
+      "平日",
+      "平日",
+      "憲法記念日",
+      "みどりの日",
+      "こどもの日",
+      "平日"
+    )
+
+    actual should equal (expected)
+  }
+
 }

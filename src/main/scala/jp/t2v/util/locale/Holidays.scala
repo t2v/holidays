@@ -42,15 +42,19 @@ object Holidays extends (LocalDate => Option[String]) {
 //  private case object Saturday extends DayOfWeek(6)
 //  private case object Sunday extends DayOfWeek(7)
 
-  private implicit def wrapLocalDate(d: LocalDate) = new {
+  private class LocalDateWrapper(d: LocalDate) {
     def is(w: DayOfWeek): Boolean = d.getDayOfWeek == w.ordinal
   }
-  private implicit def wrapBoolean(b: Boolean) = new {
+  private implicit def wrapLocalDate(d: LocalDate) = new LocalDateWrapper(d)
+  
+  private class BooleanWrapper(b: Boolean) {
     def ?[X](s: => X) = new {
       def |[Y >: X](n: => Y): Y = if (b) s else n
     }
     def opt[A](s: => A): Option[A] = if (b) Some(s) else None
   }
+  private implicit def wrapBoolean(b: Boolean) = new BooleanWrapper(b)
+  
   private def springEquinox(year: Int): Int = {
     if (year <= 1947) return 99
     if (year <= 1979) return (20.8357 + (0.242194 * (year - 1980)) - ((year - 1983) / 4)).toInt

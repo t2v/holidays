@@ -47,10 +47,11 @@ object Holidays extends (LocalDate => Option[String]) {
   }
   private implicit def wrapLocalDate(d: LocalDate) = new LocalDateWrapper(d)
   
-  private class BooleanWrapper(b: Boolean) {
-    def ?[X](s: => X) = new {
+  private class Condition[X](b: Boolean, s: => X) {
       def |[Y >: X](n: => Y): Y = if (b) s else n
-    }
+  }
+  private class BooleanWrapper(b: Boolean) {
+    def ?[X](s: => X) = new Condition(b, s)
     def opt[A](s: => A): Option[A] = if (b) Some(s) else None
   }
   private implicit def wrapBoolean(b: Boolean) = new BooleanWrapper(b)

@@ -3,7 +3,7 @@ package jp.t2v.util.locale
 import org.scalatest._
 import org.scalatest.matchers.ShouldMatchers
 
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Implicits._
 
 class HolidaysSpec extends FlatSpec with ShouldMatchers {

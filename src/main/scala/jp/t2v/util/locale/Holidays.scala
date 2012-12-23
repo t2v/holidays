@@ -21,7 +21,7 @@
 
 package jp.t2v.util.locale
 
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 import org.joda.time.DateTimeConstants._
 
 object Holidays extends (LocalDate => Option[String]) {

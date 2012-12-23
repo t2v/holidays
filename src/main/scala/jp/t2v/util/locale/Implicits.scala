@@ -1,6 +1,6 @@
 package jp.t2v.util.locale
 
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 
 object Implicits {
 

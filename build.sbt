@@ -1,10 +1,19 @@
 name := "holidays"
 
-version := "1.0"
+version := "2.0"
+
+crossScalaVersions := Seq("2.9.1", "2.9.2", "2.10.0")
+
+scalacOptions <++= scalaVersion map { v =>
+  if (v.startsWith("2.10"))
+    Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
+  else
+    Seq("-unchecked", "-deprecation")
+}
 
 libraryDependencies ++= Seq(
-  "org.scalaj" %% "scalaj-time" % "0.6",
-  "org.scalatest" %% "scalatest" % "1.8" % "test"
+  "com.github.nscala-time" %% "nscala-time" % "0.2.0" cross CrossVersion.full,
+  "org.scalatest" %% "scalatest" % "1.8" % "test" cross CrossVersion.full
 )
 
 organization := "jp.t2v"

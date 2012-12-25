@@ -12,12 +12,44 @@ scalacOptions <++= scalaVersion map { v =>
 }
 
 libraryDependencies ++= Seq(
-  "com.github.nscala-time" %% "nscala-time" % "0.2.0" cross CrossVersion.full,
+  "com.github.nscala-time" %% "nscala-time" % "0.2.0",
   "org.scalatest" %% "scalatest" % "1.8" % "test" cross CrossVersion.full
 )
 
 organization := "jp.t2v"
 
-publishTo := sys.env.get("LOCAL_MAVEN_REPO").map { dir =>
-  Resolver.file("maven-repo", file(dir))(Patterns(true, Resolver.mavenStyleBasePattern))
+publishMavenStyle := true
+
+publishTo <<= version { (v: String) =>
+  val nexus = "https://oss.sonatype.org/"
+  if (v.trim.endsWith("SNAPSHOT")) 
+    Some("snapshots" at nexus + "content/repositories/snapshots") 
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
+
+publishArtifact in Test := false
+
+pomIncludeRepository := { _ => false }
+
+pomExtra := (
+    <url>https://github.com/t2v/holidays</url>
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:t2v/holidays.git</url>
+      <connection>scm:git:git@github.com:t2v/holidays.git</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>gakuzzzz</id>
+        <name>gakuzzzz</name>
+        <url>https://github.com/gakuzzzz</url>
+      </developer>
+    </developers>
+)

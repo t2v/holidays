@@ -4,18 +4,15 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
 # 依存ライブラリ
 
-- scala-time https://github.com/jorgeortiz85/scala-time
+- nscala-time https://github.com/nscala-time/nscala-time
 
 # 導入
 
 以下の記述を `build.sbt` か `Build.scala` に足してください。
+Scala2.9.1, 2.9.2, 2.10.0 に対応しています。
 
 ```scala
-resolvers += "t2v.jp repo" at "http://www.t2v.jp/maven-repo/"
-```
-
-```scala
-libraryDependencies += "jp.t2v" % "holidays_2.9.2" % "1.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "2.0"
 ```
 
 # 使い方
@@ -23,7 +20,7 @@ libraryDependencies += "jp.t2v" % "holidays_2.9.2" % "1.0"
 ## Implicit に使う
 
 ```scala
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Implicits._
 
 DateTime.now.holidayName   // Option[String] で休日名
@@ -37,7 +34,7 @@ new LocalDate(2012, 9, 10).holidayName // None
 ## Explicit に使う
 
 ```scala
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Holidays
 
 Holidays(new LocalDate(2012, 9, 22))  // Some("秋分の日")
@@ -48,7 +45,7 @@ Holidays(new LocalDate(2012, 9, 10))  // None
 ## パターンマッチにも
 
 ```scala
-import org.scala_tools.time.Imports._
+import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Holidays
 
 val start = new LocalDate(2012, 4, 28)

@@ -109,8 +109,10 @@ object Holidays extends (LocalDate => Option[String]) {
         case JULY =>
           if (year >= 2003) (weekOfMonth == 3) && (d is Monday) opt "海の日"
           else (year >= 1996) && (day == 20) opt "海の日"
-        case AUGUST =>
-          None
+        case AUGUST => day match {
+          case 11 => year >= 2016 opt "山の日"
+          case _  => None
+        }
         case SEPTEMBER =>
           val equinox = autumnEquinox(year)
           if (day == equinox) {

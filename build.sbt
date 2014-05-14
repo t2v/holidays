@@ -1,8 +1,8 @@
 name := "holidays"
 
-version := "2.0"
+version := "3.0-SNAPSHOT"
 
-crossScalaVersions := Seq("2.9.1", "2.9.2", "2.10.0")
+crossScalaVersions := Seq("2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.11.0")
 
 scalacOptions <++= scalaVersion map { v =>
   if (v.startsWith("2.10"))
@@ -11,10 +11,13 @@ scalacOptions <++= scalaVersion map { v =>
     Seq("-unchecked", "-deprecation")
 }
 
-libraryDependencies ++= Seq(
-  "com.github.nscala-time" %% "nscala-time" % "0.2.0",
-  "org.scalatest" %% "scalatest" % "1.8" % "test" cross CrossVersion.full
-)
+libraryDependencies <<= scalaVersion { v => Seq(
+  "com.github.nscala-time" %% "nscala-time" % "1.0.0",
+  if (v.startsWith("2.9."))
+    "org.scalatest" %% "scalatest" % "1.9.2" % "test" cross CrossVersion.full
+  else
+    "org.scalatest" %% "scalatest" % "2.1.6" % "test"
+)}
 
 organization := "jp.t2v"
 

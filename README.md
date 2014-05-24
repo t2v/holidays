@@ -2,6 +2,8 @@
 
 http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
+※山の日にも対応しました。
+
 # 依存ライブラリ
 
 - nscala-time https://github.com/nscala-time/nscala-time
@@ -9,10 +11,10 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 # 導入
 
 以下の記述を `build.sbt` か `Build.scala` に足してください。
-Scala2.9.1, 2.9.2, 2.10.0 に対応しています。
+Scala2.9.1, 2.9.2, 2.9.3, 2.10.x, 2.11.x に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "2.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "3.0"
 ```
 
 # 使い方

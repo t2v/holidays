@@ -1,14 +1,14 @@
 name := "holidays"
 
-version := "3.0-SNAPSHOT"
+version := "3.0"
 
 crossScalaVersions := Seq("2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.11.0")
 
 scalacOptions <++= scalaVersion map { v =>
-  if (v.startsWith("2.10"))
-    Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
-  else
+  if (v.startsWith("2.9."))
     Seq("-unchecked", "-deprecation")
+  else
+    Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 }
 
 libraryDependencies <<= scalaVersion { v => Seq(

@@ -23,6 +23,7 @@ package jp.t2v.util.locale
 
 import com.github.nscala_time.time.Imports._
 import org.joda.time.DateTimeConstants._
+import scala.annotation.switch
 
 object Holidays extends (LocalDate => Option[String]) {
 
@@ -78,7 +79,7 @@ object Holidays extends (LocalDate => Option[String]) {
       val month = d.getMonthOfYear
       val day = d.getDayOfMonth
       val weekOfMonth = (day - 1) / 7 + 1
-      month match {
+      (month: @switch) match {
         case JANUARY =>
           if (day == 1) Some("元日")
           else if (year >= 2000) weekOfMonth == 2 && (d is Monday) opt "成人の日"
@@ -95,7 +96,7 @@ object Holidays extends (LocalDate => Option[String]) {
           } else {
             d == 明仁親王の結婚の儀 opt "皇太子明仁親王の結婚の儀"
           }
-        case MAY => day match {
+        case MAY => (day: @switch) match {
           case 3 => Some("憲法記念日")
           case 4 =>
             if (year >= 2007) Some("みどりの日")

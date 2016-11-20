@@ -1,12 +1,11 @@
 package jp.t2v.util.locale
 
 import org.scalatest._
-import org.scalatest.matchers.ShouldMatchers
 
 import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Implicits._
 
-class HolidaysSpec extends FlatSpec with ShouldMatchers {
+class HolidaysSpec extends FlatSpec with Matchers {
 
   "The Holidays" should "return holiday name" in {
     new LocalDate(2012,  1,  1).holidayName should equal (Some("元日"))
@@ -32,7 +31,7 @@ class HolidaysSpec extends FlatSpec with ShouldMatchers {
     new LocalDate(2009,  5,  6).holidayName should equal (Some("振替休日"))
   }
 
-  implicit def wrapString(s: String) = new {
+  implicit class WrapString(s: String) {
     def dt: DateTime = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").parseDateTime(s)
     def ld: LocalDate = DateTimeFormat.forPattern("yyyy/MM/dd").parseLocalDate(s)
   }

@@ -2,30 +2,22 @@ name := "holidays"
 
 version := "3.0"
 
-crossScalaVersions := Seq("2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.11.0")
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
 
-scalacOptions <++= scalaVersion map { v =>
-  if (v.startsWith("2.9."))
-    Seq("-unchecked", "-deprecation")
-  else
-    Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
-}
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions")
 
-libraryDependencies <<= scalaVersion { v => Seq(
-  "com.github.nscala-time" %% "nscala-time" % "1.0.0",
-  if (v.startsWith("2.9."))
-    "org.scalatest" %% "scalatest" % "1.9.2" % "test" cross CrossVersion.full
-  else
-    "org.scalatest" %% "scalatest" % "2.1.6" % "test"
-)}
+libraryDependencies ++= Seq(
+  "com.github.nscala-time" %% "nscala-time" % "2.14.0",
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+)
 
 organization := "jp.t2v"
 
 publishMavenStyle := true
 
-publishTo <<= version { (v: String) =>
+publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT")) 
+  if (isSnapshot.value) 
     Some("snapshots" at nexus + "content/repositories/snapshots") 
   else
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")

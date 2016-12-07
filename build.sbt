@@ -1,6 +1,6 @@
 name := "holidays"
 
-version := "3.0"
+version := "4.0"
 
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
 

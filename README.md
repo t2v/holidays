@@ -10,10 +10,14 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
 # 導入
 
-以下の記述を `build.sbt` か `Build.scala` に足してください。
-Scala2.9.1, 2.9.2, 2.9.3, 2.10.x, 2.11.x に対応しています。
+以下の記述を `build.sbt` に足してください。
+Scala2.9.1, 2.9.2, 2.9.3, 2.10.x, 2.11.x, 2.12.x に対応しています。
 
 ```scala
+// Scala2.10.x ～ Scala2.12.x
+libraryDependencies += "jp.t2v" %% "holidays" % "4.0"
+
+// Scala2.9.x
 libraryDependencies += "jp.t2v" %% "holidays" % "3.0"
 ```
 

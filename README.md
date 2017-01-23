@@ -4,11 +4,32 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 
 ※山の日にも対応しました。
 
-# 依存ライブラリ
-
-- nscala-time https://github.com/nscala-time/nscala-time
 
 # 導入
+
+
+## Java8 Date&Time API と共に使いたい場合
+
+以下の記述を `build.sbt` に足してください。
+Scala 2.12.x に対応しています。
+
+```scala
+libraryDependencies += "jp.t2v" %% "holidays" % "5.1"
+```
+
+## Joda-Time と共に使いたい場合
+
+### Holidays5.x 以降
+
+Holidaysの依存に [nscala-time](https://github.com/nscala-time/nscala-time) が含まれなくなったため、個別に nscala-time か joda-time を依存性に追加してください。
+Scala 2.12.x に対応しています。
+
+```scala
+libraryDependencies += "jp.t2v" %% "holidays" % "5.1"
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.14.0"
+```
+
+### Holidays4.x 以前
 
 以下の記述を `build.sbt` に足してください。
 Scala2.9.1, 2.9.2, 2.9.3, 2.10.x, 2.11.x, 2.12.x に対応しています。
@@ -25,6 +46,24 @@ libraryDependencies += "jp.t2v" %% "holidays" % "3.0"
 
 ## Implicit に使う
 
+### Java8 Date&Time API
+
+```scala
+import java.time.LocalDate
+import jp.t2v.util.locale.Implicits._
+
+LocalDate.now().holidayName   // Option[String] で休日名
+LocalDate.now().isHoliday     // Boolean
+
+LocalDate.of(2012, 9, 22).holidayName // Some("秋分の日")
+LocalDate.of(2009, 5,  6).holidayName // Some("振替休日")
+LocalDate.of(2012, 9, 10).holidayName // None
+```
+
+`LocalDate` の他に `LocalDateTime` および `ZonedDateTime` をサポートしています。
+
+### Joda-Time(with nscala-time)
+
 ```scala
 import com.github.nscala_time.time.Imports._
 import jp.t2v.util.locale.Implicits._
@@ -37,7 +76,22 @@ new LocalDate(2009, 5,  6).holidayName // Some("振替休日")
 new LocalDate(2012, 9, 10).holidayName // None
 ```
 
+`LocalDate` の他に `DateTime` をサポートしています。
+
 ## Explicit に使う
+
+### Java8 Date&Time API
+
+```scala
+import java.time.LocalDate
+import jp.t2v.util.locale.Holidays
+
+Holidays(LocalDate.of(2012, 9, 22))  // Some("秋分の日")
+Holidays(LocalDate.of(2009, 5,  6))  // Some("振替休日")
+Holidays(LocalDate.of(2012, 9, 10))  // None
+```
+
+### Joda-Time(with nscala-time)
 
 ```scala
 import com.github.nscala_time.time.Imports._
@@ -48,15 +102,17 @@ Holidays(new LocalDate(2009, 5,  6))  // Some("振替休日")
 Holidays(new LocalDate(2012, 9, 10))  // None
 ```
 
+`LocalDate` の他に `DateTime` をサポートしています。
+
 ## パターンマッチにも
 
 ```scala
-import com.github.nscala_time.time.Imports._
+import java.time.LocalDate
 import jp.t2v.util.locale.Holidays
 
-val start = new LocalDate(2012, 4, 28)
-val end = new LocalDate(2012, 5, 6)
-val days: Seq[LocalDate] = Stream.iterate(start)(_ + 1.day).takeWhile(end >)
+val start = LocalDate.of(2012, 4, 28)
+val end = LocalDate.of(2012, 5, 6)
+val days: Seq[LocalDate] = Stream.iterate(start)(_.plusDays(1)).takeWhile(end >)
 
 val names = days.map {
   case Holidays(name) => name
@@ -65,6 +121,8 @@ val names = days.map {
 
 names == Seq("平日", "昭和の日", "振替休日", "平日", "平日", "憲法記念日", "みどりの日", "こどもの日")
 ```
+
+Java8 `LocalDate`, `LocalDateTime`, `ZonedDateTime` および Joda-Time `LocalDate`, `DateTime` をサポートしています。
 
 # Copyright
 

@@ -1,33 +1,23 @@
-name := "holidays"
-
-version := "4.0"
-
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
-
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions")
-
-libraryDependencies ++= Seq(
-  "com.github.nscala-time" %% "nscala-time" % "2.14.0",
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
-)
-
-organization := "jp.t2v"
-
-publishMavenStyle := true
-
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value) 
-    Some("snapshots" at nexus + "content/repositories/snapshots") 
-  else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-}
-
-publishArtifact in Test := false
-
-pomIncludeRepository := { _ => false }
-
-pomExtra := (
+val commonSettings = Seq(
+  version := "5.0",
+  organization := "jp.t2v",
+  scalaVersion := "2.12.1",
+  crossScalaVersions := Seq("2.12.1"),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
+  libraryDependencies ++= Seq(
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  ),
+  publishMavenStyle := true,
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+  },
+  publishArtifact in Test := false,
+  pomIncludeRepository := { _ => false },
+  pomExtra :=
     <url>https://github.com/t2v/holidays</url>
     <licenses>
       <license>
@@ -48,3 +38,28 @@ pomExtra := (
       </developer>
     </developers>
 )
+
+lazy val root = (project in file(".")).aggregate(core, joda).settings(
+  crossScalaVersions := Seq("2.12.1"),
+  publish           := { },
+  publishArtifact   := false,
+  packagedArtifacts := Map.empty
+)
+
+lazy val core = (project in file("core")).settings(commonSettings).settings(
+  name := "holidays",
+  libraryDependencies ++= Seq(
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value
+  )
+)
+
+lazy val joda = (project in file("joda")).settings(commonSettings).settings(
+  name := "holidays-joda",
+  libraryDependencies ++= Seq(
+    "joda-time" % "joda-time" % "2.9.7"
+  )
+).dependsOn(core)
+
+
+
+

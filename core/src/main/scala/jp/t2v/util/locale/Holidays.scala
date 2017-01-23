@@ -131,8 +131,7 @@ object Holidays extends (LocalDate => Option[String]) {
       }
     }
     def substitute(d: LocalDate): Option[String] = {
-      if ((d is MONDAY) && (d >= 振替休日施行) && holidayName(d.minusDays(1)).isDefined) Some("振替休日")
-      else None
+      ((d is MONDAY) && (d >= 振替休日施行) && holidayName(d.minusDays(1)).isDefined) opt "振替休日"
     }
     holidayName(target) orElse substitute(target)
   }

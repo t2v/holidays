@@ -1,3 +1,5 @@
+import scala.xml.NodeSeq
+
 val commonSettings = Seq(
   version := "5.0",
   organization := "jp.t2v",
@@ -41,9 +43,12 @@ val commonSettings = Seq(
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
   crossScalaVersions := Seq("2.12.1"),
+  publishMavenStyle := true,
   publish           := { },
   publishArtifact   := false,
-  packagedArtifacts := Map.empty
+  packagedArtifacts := Map.empty,
+  publishTo         := Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"),
+  pomExtra          := NodeSeq.Empty
 )
 
 lazy val core = (project in file("core")).settings(commonSettings).settings(
@@ -57,7 +62,13 @@ lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   name := "holidays-joda",
   libraryDependencies ++= Seq(
     "joda-time" % "joda-time" % "2.9.7"
-  )
+  ),
+  publishMavenStyle := true,
+  publish           := { },
+  publishArtifact   := false,
+  packagedArtifacts := Map.empty,
+  publishTo         := Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"),
+  pomExtra          := NodeSeq.Empty
 ).dependsOn(core)
 
 

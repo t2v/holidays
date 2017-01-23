@@ -8,8 +8,8 @@ abstract class LocalDateConverter[A] {
 }
 object LocalDateConverter extends LowPriorityLocalDateConverter {
   implicit val localDate: LocalDateConverter[LocalDate] = d => d
-  implicit def localDateTime: LocalDateConverter[LocalDateTime] = _.toLocalDate
-  implicit def zonedDateTime: LocalDateConverter[ZonedDateTime] = _.toLocalDate
+  implicit val localDateTime: LocalDateConverter[LocalDateTime] = _.toLocalDate
+  implicit val zonedDateTime: LocalDateConverter[ZonedDateTime] = _.toLocalDate
 }
 
 trait LowPriorityLocalDateConverter {

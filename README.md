@@ -1,9 +1,10 @@
 # 祝日計算 in Scala [![Build Status](https://travis-ci.org/t2v/holidays.svg?branch=master)](https://travis-ci.org/t2v/holidays)
 
-http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
+http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 
-※山の日にも対応しました。
-
+※山の日 対応。
+※東京五輪 臨時祝日 / 体育の日 改名 対応
+※生前退位 / 皇位継承 対応
 
 # 導入
 
@@ -11,35 +12,20 @@ http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm の Scala 移植版です。
 ## Java8 Date&Time API と共に使いたい場合
 
 以下の記述を `build.sbt` に足してください。
-Scala 2.12.x に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.0-M4 に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "5.1"
+libraryDependencies += "jp.t2v" %% "holidays" % "5.2"
 ```
 
 ## Joda-Time と共に使いたい場合
 
-### Holidays5.x 以降
-
 Holidaysの依存に [nscala-time](https://github.com/nscala-time/nscala-time) が含まれなくなったため、個別に nscala-time か joda-time を依存性に追加してください。
-Scala 2.12.x に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.0-M4 に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "5.1"
+libraryDependencies += "jp.t2v" %% "holidays" % "5.2"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.14.0"
-```
-
-### Holidays4.x 以前
-
-以下の記述を `build.sbt` に足してください。
-Scala2.9.1, 2.9.2, 2.9.3, 2.10.x, 2.11.x, 2.12.x に対応しています。
-
-```scala
-// Scala2.10.x ～ Scala2.12.x
-libraryDependencies += "jp.t2v" %% "holidays" % "4.0"
-
-// Scala2.9.x
-libraryDependencies += "jp.t2v" %% "holidays" % "3.0"
 ```
 
 # 使い方
@@ -129,23 +115,32 @@ Java8 `LocalDate`, `LocalDateTime`, `ZonedDateTime` および Joda-Time `LocalDa
 ```
 '_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 '_/
-'_/　CopyRight(C) K.Tsunoda(AddinBox) 2001 All Rights Reserved.
-'_/　( http://www.h3.dion.ne.jp/~sakatsu/index.htm )
+'_/  CopyRight(C) K.Tsunoda(AddinBox) 2001 All Rights Reserved.
+'_/  ( AddinBox  http://addinbox.sakura.ne.jp/index.htm )
+'_/  (  旧サイト  http://www.h3.dion.ne.jp/~sakatsu/index.htm )
 '_/
-'_/　　この祝日マクロは『kt関数アドイン』で使用しているものです。
-'_/　　このロジックは、レスポンスを第一義として、可能な限り少ない
-'_/　  【条件判定の実行】で結果を出せるように設計してあります。
-'_/　　この関数では、２００７年施行の改正祝日法(昭和の日)までを
-'_/　  サポートしています(９月の国民の休日を含む)。
+'_/    この祝日マクロは『kt関数アドイン』で使用しているものです。
+'_/    このロジックは、レスポンスを第一義として、可能な限り少ない
+'_/    【条件判定の実行】で結果を出せるように設計してあります。
 '_/
-'_/　(*1)このマクロを引用するに当たっては、必ずこのコメントも
-'_/　　　一緒に引用する事とします。
-'_/　(*2)他サイト上で本マクロを直接引用する事は、ご遠慮願います。
-'_/　　　【 http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm 】
-'_/　　　へのリンクによる紹介で対応して下さい。
-'_/　(*3)[ktHolidayName]という関数名そのものは、各自の環境に
-'_/　　　おける命名規則に沿って変更しても構いません。
-'_/　
+'_/    この関数では以下の祝日変更までサポートしています。
+'_/    ・２０１９年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
+'_/    ・２０２０年施行の「体育の日の改名」⇒スポーツの日
+'_/    ・五輪特措法による２０２０年の「祝日移動」 
+'_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
+'_/
+'_/    下記２つについては未だ法整備自体が行なわれていませんので未対応です。
+'_/    ・２０１９年の退位日(4/30)/即位日(5/1)
+'_/    ・２０１９年の「即位の礼　正殿の儀 (10/22) 」
+'_/
+'_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
+'_/      一緒に引用する事とします。
+'_/  (*2)他サイト上で本マクロを直接引用する事は、ご遠慮願います。
+'_/      【 http://addinbox.sakura.ne.jp/holiday_logic.htm 】
+'_/      へのリンクによる紹介で対応して下さい。
+'_/  (*3)[ktHolidayName]という関数名そのものは、各自の環境に
+'_/      おける命名規則に沿って変更しても構いません。
+'_/
 '_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 ```
 

@@ -2,6 +2,7 @@ package jp.t2v.util.locale
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalQueries
 
 import org.scalatest._
 
@@ -28,13 +29,26 @@ class HolidaysSpec extends FlatSpec with Matchers {
     LocalDate.of(2012, 11, 23).holidayName should equal (Some("勤労感謝の日"))
     LocalDate.of(2012, 12, 23).holidayName should equal (Some("天皇誕生日"))
     LocalDate.of(2012, 12, 24).holidayName should equal (Some("振替休日"))
+    LocalDate.of(2019,  2, 23).holidayName should equal (None)
+    LocalDate.of(2020,  2, 23).holidayName should equal (Some("天皇誕生日"))
+    LocalDate.of(2021,  7, 19).holidayName should equal (Some("海の日"))
+    LocalDate.of(2020,  7, 23).holidayName should equal (Some("海の日"))
+    LocalDate.of(2020,  7, 24).holidayName should equal (Some("スポーツの日"))
+    LocalDate.of(2021,  8, 11).holidayName should equal (Some("山の日"))
+    LocalDate.of(2020,  8, 11).holidayName should equal (None)
+    LocalDate.of(2020,  8, 10).holidayName should equal (Some("山の日"))
+    LocalDate.of(2021, 10, 11).holidayName should equal (Some("スポーツの日"))
+    LocalDate.of(2020, 10, 12).holidayName should equal (None)
+    LocalDate.of(2019, 10, 14).holidayName should equal (Some("体育の日"))
+    LocalDate.of(2018, 12, 23).holidayName should equal (Some("天皇誕生日"))
+    LocalDate.of(2019, 12, 23).holidayName should equal (None)
 
     // 水曜日の振替休日
     LocalDate.of(2009,  5,  6).holidayName should equal (Some("振替休日"))
   }
 
   implicit class WrapString(s: String) {
-    def ld: LocalDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").parse(s, LocalDate.from)
+    def ld: LocalDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").parse(s, TemporalQueries.localDate)
   }
 
   "Holidays extractor" should "extract holiday name" in {

@@ -1,24 +1,32 @@
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 //_/
-//_/　CopyRight(C) K.Tsunoda(AddinBox) 2001 All Rights Reserved.
-//_/　( http://www.h3.dion.ne.jp/~sakatsu/index.htm )
+//_/  CopyRight(C) K.Tsunoda(AddinBox) 2001 All Rights Reserved.
+//_/  ( AddinBox  http://addinbox.sakura.ne.jp/index.htm )
+//_/  (  旧サイト  http://www.h3.dion.ne.jp/~sakatsu/index.htm )
 //_/
-//_/　　この祝日マクロは『kt関数アドイン』で使用しているものです。
-//_/　　このロジックは、レスポンスを第一義として、可能な限り少ない
-//_/　  【条件判定の実行】で結果を出せるように設計してあります。
-//_/　　この関数では、２００７年施行の改正祝日法(昭和の日)までを
-//_/　  サポートしています(９月の国民の休日を含む)。
+//_/    この祝日マクロは『kt関数アドイン』で使用しているものです。
+//_/    このロジックは、レスポンスを第一義として、可能な限り少ない
+//_/    【条件判定の実行】で結果を出せるように設計してあります。
 //_/
-//_/　(*1)このマクロを引用するに当たっては、必ずこのコメントも
-//_/　　　一緒に引用する事とします。
-//_/　(*2)他サイト上で本マクロを直接引用する事は、ご遠慮願います。
-//_/　　　【 http://www.h3.dion.ne.jp/~sakatsu/holiday_logic.htm 】
-//_/　　　へのリンクによる紹介で対応して下さい。
-//_/　(*3)[ktHolidayName]という関数名そのものは、各自の環境に
-//_/　　　おける命名規則に沿って変更しても構いません。
-//_/　
+//_/    この関数では以下の祝日変更までサポートしています。
+//_/    ・２０１９年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
+//_/    ・２０２０年施行の「体育の日の改名」⇒スポーツの日
+//_/    ・五輪特措法による２０２０年の「祝日移動」 
+//_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
+//_/
+//_/    下記２つについては未だ法整備自体が行なわれていませんので未対応です。
+//_/    ・２０１９年の退位日(4/30)/即位日(5/1)
+//_/    ・２０１９年の「即位の礼　正殿の儀 (10/22) 」
+//_/
+//_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
+//_/      一緒に引用する事とします。
+//_/  (*2)他サイト上で本マクロを直接引用する事は、ご遠慮願います。
+//_/      【 http://addinbox.sakura.ne.jp/holiday_logic.htm 】
+//_/      へのリンクによる紹介で対応して下さい。
+//_/  (*3)[ktHolidayName]という関数名そのものは、各自の環境に
+//_/      おける命名規則に沿って変更しても構いません。
+//_/
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 package jp.t2v.util.locale
 
 import java.time.{DayOfWeek, LocalDate}
@@ -76,11 +84,12 @@ object Holidays extends (LocalDate => Option[String]) {
       val weekOfMonth = (day - 1) / 7 + 1
       month match {
         case JANUARY =>
-          if (day == 1) Some("元日")
+          if      (day == 1) Some("元日")
           else if (year >= 2000) weekOfMonth == 2 && (d is MONDAY) opt "成人の日"
-          else day == 15 opt "成人の日"
+          else    day == 15 opt "成人の日"
         case FEBRUARY =>
-          if (day == 11) year >= 1967 opt "建国記念の日"
+          if      (day == 11) year >= 1967 opt "建国記念の日"
+          else if (day == 23) year >= 2020 opt "天皇誕生日"
           else d == 昭和天皇大喪の礼 opt "昭和天皇の大喪の礼"
         case MARCH =>
           day == springEquinox(year) opt "春分の日"
@@ -103,12 +112,20 @@ object Holidays extends (LocalDate => Option[String]) {
         case JUNE =>
           d == 徳仁親王の結婚の儀 opt "皇太子徳仁親王の結婚の儀"
         case JULY =>
-          if (year >= 2003) (weekOfMonth == 3) && (d is MONDAY) opt "海の日"
-          else (year >= 1996) && (day == 20) opt "海の日"
-        case AUGUST => day match {
-          case 11 => year >= 2016 opt "山の日"
-          case _  => None
-        }
+          if      (year >= 2021) (weekOfMonth == 3) && (d is MONDAY) opt "海の日"
+          else if (year == 2020) (day: @switch) match {
+                                    case 23 => Some("海の日")
+                                    case 24 => Some("スポーツの日")
+                                    case _  => None
+                                 }
+          else if (year >= 2003) (weekOfMonth == 3) && (d is MONDAY) opt "海の日"
+          else if (year >= 1996) (day == 20) opt "海の日"
+          else None
+        case AUGUST =>
+          if      (year >= 2021) (day == 11) opt "山の日"
+          else if (year == 2020) (day == 10) opt "山の日"
+          else if (year >= 2016) (day == 11) opt "山の日"
+          else None
         case SEPTEMBER =>
           val equinox = autumnEquinox(year)
           if (day == equinox) {
@@ -120,14 +137,16 @@ object Holidays extends (LocalDate => Option[String]) {
             year == 1966 && day == 15 opt "敬老の日"
           }
         case OCTOBER =>
-          if (year >= 2000) (weekOfMonth == 2) && (d is MONDAY) opt "体育の日"
-          else (year >= 1966) && (day == 10) opt "体育の日"
+          if      (year >= 2021) (weekOfMonth == 2) && (d is MONDAY) opt "スポーツの日"
+          else if (year == 2020) None
+          else if (year >= 2000) (weekOfMonth == 2) && (d is MONDAY) opt "体育の日"
+          else    (year >= 1966) && (day == 10) opt "体育の日"
         case NOVEMBER =>
-          if (day == 3) Some("文化の日")
+          if      (day == 3) Some("文化の日")
           else if (day == 23) Some("勤労感謝の日")
           else d == 即位礼正殿の儀 opt "即位礼正殿の儀"
         case DECEMBER =>
-          day == 23 && year >= 1989 opt "天皇誕生日"
+          (day == 23) && (year >= 1989) && (year <= 2018) opt "天皇誕生日"
       }
     }
     def substitute(d: LocalDate): Option[String] = {

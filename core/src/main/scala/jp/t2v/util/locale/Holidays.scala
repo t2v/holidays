@@ -9,14 +9,13 @@
 //_/    【条件判定の実行】で結果を出せるように設計してあります。
 //_/
 //_/    この関数では以下の祝日変更までサポートしています。
-//_/    ・２０１９年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
-//_/    ・２０２０年施行の「体育の日の改名」⇒スポーツの日
-//_/    ・五輪特措法による２０２０年の「祝日移動」 
+//_/    (a) 2019年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
+//_/    (b) 2019年の徳仁親王の即位日(5/1) および
+//_/       祝日に挟まれて「国民の休日」となる 4/30(平成天皇の退位日) ＆ 5/2 の２休日
+//_/    (c) 2019年の「即位の礼 正殿の儀 (10/22) 」
+//_/    (d) 2020年施行の「体育の日の改名」⇒スポーツの日
+//_/    (e) 五輪特措法による2020年の「祝日移動」
 //_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
-//_/
-//_/    下記２つについては未だ法整備自体が行なわれていませんので未対応です。
-//_/    ・２０１９年の退位日(4/30)/即位日(5/1)
-//_/    ・２０１９年の「即位の礼　正殿の儀 (10/22) 」
 //_/
 //_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
 //_/      一緒に引用する事とします。
@@ -38,12 +37,16 @@ import scala.math.Ordering.Implicits._
 
 object Holidays extends (LocalDate => Option[String]) {
 
-  private val 祝日法施行         = LocalDate.of(1948, JULY,     20)
-  private val 明仁親王の結婚の儀 = LocalDate.of(1959, APRIL,    10)
-  private val 昭和天皇大喪の礼   = LocalDate.of(1989, FEBRUARY, 24)
-  private val 徳仁親王の結婚の儀 = LocalDate.of(1993, JUNE,     9)
-  private val 即位礼正殿の儀     = LocalDate.of(1990, NOVEMBER, 12)
-  private val 振替休日施行       = LocalDate.of(1973, APRIL,    12)
+  private val 祝日法施行             = LocalDate.of(1948, JULY,     20)
+  private val 明仁親王の結婚の儀     = LocalDate.of(1959, APRIL,    10)
+  private val 昭和天皇大喪の礼       = LocalDate.of(1989, FEBRUARY, 24)
+  private val 徳仁親王の結婚の儀     = LocalDate.of(1993, JUNE,     9)
+  private val 即位礼正殿の儀         = LocalDate.of(1990, NOVEMBER, 12)
+  private val 振替休日施行           = LocalDate.of(1973, APRIL,    12)
+  private val 平成天皇の退位         = LocalDate.of(2019, APRIL, 30)
+  private val 徳仁親王の即位         = LocalDate.of(2019, MAY, 1)
+  private val 国民の休日2019GW       = LocalDate.of(2019, MAY, 2)
+  private val 即位礼正殿の儀_徳仁親王 = LocalDate.of(2019, OCTOBER, 22)
 
   private[this] implicit class LocalDateWrapper(val d: LocalDate) extends AnyVal {
     @inline def is(w: DayOfWeek): Boolean = d.getDayOfWeek == w
@@ -97,9 +100,9 @@ object Holidays extends (LocalDate => Option[String]) {
           if (day == 29) {
             if (year >= 2007) Some("昭和の日")
             else (year >= 1989) ? Some("みどりの日") | Some("天皇誕生日")
-          } else {
-            d == 明仁親王の結婚の儀 opt "皇太子明仁親王の結婚の儀"
           }
+          else if (d == 平成天皇の退位) Some("国民の休日")
+          else     d == 明仁親王の結婚の儀 opt "皇太子明仁親王の結婚の儀"
         case MAY => (day: @switch) match {
           case 3 => Some("憲法記念日")
           case 4 =>
@@ -107,7 +110,10 @@ object Holidays extends (LocalDate => Option[String]) {
             else year >= 1986 && (d is MONDAY) opt "国民の休日"
           case 5 => Some("こどもの日")
           case 6 if year >= 2007 && ((d is TUESDAY) || (d is WEDNESDAY)) => Some("振替休日")
-          case _ => None
+          case _ =>
+            if      (d == 徳仁親王の即位) Some("即位の日")
+            else if (d == 国民の休日2019GW) Some("国民の休日")
+            else None
         }
         case JUNE =>
           d == 徳仁親王の結婚の儀 opt "皇太子徳仁親王の結婚の儀"
@@ -139,7 +145,10 @@ object Holidays extends (LocalDate => Option[String]) {
         case OCTOBER =>
           if      (year >= 2021) (weekOfMonth == 2) && (d is MONDAY) opt "スポーツの日"
           else if (year == 2020) None
-          else if (year >= 2000) (weekOfMonth == 2) && (d is MONDAY) opt "体育の日"
+          else if (year >= 2000) {
+            if ((weekOfMonth == 2) && (d is MONDAY)) Some("体育の日")
+            else d == 即位礼正殿の儀_徳仁親王 opt "即位礼正殿の儀"
+          }
           else    (year >= 1966) && (day == 10) opt "体育の日"
         case NOVEMBER =>
           if      (day == 3) Some("文化の日")

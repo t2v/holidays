@@ -42,6 +42,13 @@ class HolidaysSpec extends FlatSpec with Matchers {
     LocalDate.of(2019, 10, 14).holidayName should equal (Some("体育の日"))
     LocalDate.of(2018, 12, 23).holidayName should equal (Some("天皇誕生日"))
     LocalDate.of(2019, 12, 23).holidayName should equal (None)
+    LocalDate.of(1959,  4, 10).holidayName should equal (Some("皇太子明仁親王の結婚の儀"))
+    LocalDate.of(2019,  4, 30).holidayName should equal (Some("国民の休日"))
+    LocalDate.of(2019,  5,  1).holidayName should equal (Some("即位の日"))
+    LocalDate.of(2019,  5,  2).holidayName should equal (Some("国民の休日"))
+    LocalDate.of(2019, 10, 22).holidayName should equal (Some("即位礼正殿の儀"))
+    LocalDate.of(2020,  5,  1).holidayName should equal (None)
+    LocalDate.of(2020, 10, 22).holidayName should equal (None)
 
     // 水曜日の振替休日
     LocalDate.of(2009,  5,  6).holidayName should equal (Some("振替休日"))

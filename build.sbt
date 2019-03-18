@@ -4,10 +4,10 @@ val commonSettings = Seq(
   version := "5.2",
   organization := "jp.t2v",
   scalaVersion := "2.12.7",
-  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M4"),
+  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M5"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.0.6-SNAP1" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.6" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -42,7 +42,7 @@ val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
-  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M4"),
+  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M5"),
   publishMavenStyle := true,
   publish           := { },
   publishArtifact   := false,

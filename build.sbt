@@ -3,11 +3,11 @@ import scala.xml.NodeSeq
 val commonSettings = Seq(
   version := "5.2",
   organization := "jp.t2v",
-  scalaVersion := "2.12.7",
-  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M5"),
+  scalaVersion := "2.12.8",
+  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.0.6" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.7" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -42,7 +42,7 @@ val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
-  crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M5"),
+  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
   publishMavenStyle := true,
   publish           := { },
   publishArtifact   := false,
@@ -61,7 +61,7 @@ lazy val core = (project in file("core")).settings(commonSettings).settings(
 lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   name := "holidays-joda",
   libraryDependencies ++= Seq(
-    "joda-time" % "joda-time" % "2.9.7"
+    "joda-time" % "joda-time" % "2.10.1"
   ),
   publishMavenStyle := true,
   publish           := { },

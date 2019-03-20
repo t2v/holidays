@@ -5,6 +5,7 @@ http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 - ※山の日 対応
 - ※東京五輪 臨時祝日 / 体育の日 改名 対応
 - ※生前退位 / 皇位継承 対応
+- ※2019年 臨時休日 対応
 
 # 導入
 
@@ -12,20 +13,20 @@ http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 ## Java8 Date&Time API と共に使いたい場合
 
 以下の記述を `build.sbt` に足してください。
-Scala 2.11.x, 2.12.x, 2.13.0-M4 に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.0-M5 に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "5.2"
+libraryDependencies += "jp.t2v" %% "holidays" % "6.0"
 ```
 
 ## Joda-Time と共に使いたい場合
 
 Holidaysの依存に [nscala-time](https://github.com/nscala-time/nscala-time) が含まれなくなったため、個別に nscala-time か joda-time を依存性に追加してください。
-Scala 2.11.x, 2.12.x, 2.13.0-M4 に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.0-M5 に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "5.2"
-libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.14.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "6.0"
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.22.0"
 ```
 
 # 使い方
@@ -124,14 +125,13 @@ Java8 `LocalDate`, `LocalDateTime`, `ZonedDateTime` および Joda-Time `LocalDa
 '_/    【条件判定の実行】で結果を出せるように設計してあります。
 '_/
 '_/    この関数では以下の祝日変更までサポートしています。
-'_/    ・２０１９年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
-'_/    ・２０２０年施行の「体育の日の改名」⇒スポーツの日
-'_/    ・五輪特措法による２０２０年の「祝日移動」 
+'_/    (a) 2019年施行の「天皇誕生日の変更」 12/23⇒2/23 (補：2019年には[天皇誕生日]はありません)
+'_/    (b) 2019年の徳仁親王の即位日(5/1) および
+'_/       祝日に挟まれて「国民の休日」となる 4/30(平成天皇の退位日) ＆ 5/2 の２休日
+'_/    (c) 2019年の「即位の礼 正殿の儀 (10/22) 」
+'_/    (d) 2020年施行の「体育の日の改名」⇒スポーツの日
+'_/    (e) 五輪特措法による2020年の「祝日移動」
 '_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
-'_/
-'_/    下記２つについては未だ法整備自体が行なわれていませんので未対応です。
-'_/    ・２０１９年の退位日(4/30)/即位日(5/1)
-'_/    ・２０１９年の「即位の礼　正殿の儀 (10/22) 」
 '_/
 '_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
 '_/      一緒に引用する事とします。

@@ -1,7 +1,7 @@
 import scala.xml.NodeSeq
 
 val commonSettings = Seq(
-  version := "5.2",
+  version := "6.0",
   organization := "jp.t2v",
   scalaVersion := "2.12.8",
   crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),

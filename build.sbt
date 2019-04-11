@@ -4,10 +4,10 @@ val commonSettings = Seq(
   version := "6.0",
   organization := "jp.t2v",
   scalaVersion := "2.12.8",
-  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
+  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-RC1"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.0.7" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.8-RC2" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {

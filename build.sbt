@@ -61,7 +61,7 @@ lazy val core = (project in file("core")).settings(commonSettings).settings(
 lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   name := "holidays-joda",
   libraryDependencies ++= Seq(
-    "joda-time" % "joda-time" % "2.10.1"
+    "joda-time" % "joda-time" % "2.10.2"
   ),
   publishMavenStyle := true,
   publish           := { },

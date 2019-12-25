@@ -2,9 +2,10 @@ package jp.t2v.util.locale
 
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTime => JodaDateTime, LocalDate => JodaLocalDate}
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class JodaSpec  extends FlatSpec with Matchers {
+class JodaSpec  extends AnyFlatSpec with Matchers {
 
   "The Holidays" should "return holiday name" in {
     import jp.t2v.util.locale.Implicits._

@@ -7,7 +7,7 @@ val commonSettings = Seq(
   crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.0.8" % "test"
+    "org.scalatest" %% "scalatest" % "3.1.0" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -61,7 +61,7 @@ lazy val core = (project in file("core")).settings(commonSettings).settings(
 lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   name := "holidays-joda",
   libraryDependencies ++= Seq(
-    "joda-time" % "joda-time" % "2.10.3"
+    "joda-time" % "joda-time" % "2.10.5"
   ),
   publishMavenStyle := true,
   publish           := { },

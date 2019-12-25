@@ -4,9 +4,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalQueries
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class HolidaysSpec extends FlatSpec with Matchers {
+class HolidaysSpec extends AnyFlatSpec with Matchers {
 
   "The Holidays" should "return holiday name" in {
     import jp.t2v.util.locale.Implicits._

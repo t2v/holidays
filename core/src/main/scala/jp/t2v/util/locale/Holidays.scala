@@ -16,6 +16,8 @@
 //_/    (d) 2020年施行の「体育の日の改名」⇒スポーツの日
 //_/    (e) 五輪特措法による2020年の「祝日移動」
 //_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
+//_/    (f) 五輪特措法による2021年の「祝日移動」
+//_/       海の日：7/20(3rd Mon)⇒7/22, スポーツの日:10/11(2nd Mon)⇒7/23, 山の日：8/11⇒8/8
 //_/
 //_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
 //_/      一緒に引用する事とします。
@@ -51,7 +53,7 @@ object Holidays extends (LocalDate => Option[String]) {
   private[this] implicit class LocalDateWrapper(val d: LocalDate) extends AnyVal {
     @inline def is(w: DayOfWeek): Boolean = d.getDayOfWeek == w
   }
-  
+
   private[this] class Condition[X](b: Boolean, s: => X) {
     def |[Y >: X](n: => Y): Y = if (b) s else n
   }
@@ -59,7 +61,7 @@ object Holidays extends (LocalDate => Option[String]) {
     def ?[X](s: => X) = new Condition(b, s)
     @inline def opt(s: String): Option[String] = if (b) Some(s) else None
   }
-  
+
   private[this] def springEquinox(year: Int): Int = {
     if (year <= 1947) return 99
     if (year <= 1979) return (20.8357 + (0.242194 * (year - 1980)) - ((year - 1983) / 4)).toInt
@@ -118,7 +120,12 @@ object Holidays extends (LocalDate => Option[String]) {
         case JUNE =>
           d == 徳仁親王の結婚の儀 opt "皇太子徳仁親王の結婚の儀"
         case JULY =>
-          if      (year >= 2021) (weekOfMonth == 3) && (d is MONDAY) opt "海の日"
+          if      (year >= 2022) (weekOfMonth == 3) && (d is MONDAY) opt "海の日"
+          else if (year == 2021) (day: @switch) match {
+                                   case 22 => Some("海の日")
+                                   case 23 => Some("スポーツの日")
+                                   case _  => None
+                                 }
           else if (year == 2020) (day: @switch) match {
                                     case 23 => Some("海の日")
                                     case 24 => Some("スポーツの日")
@@ -128,7 +135,8 @@ object Holidays extends (LocalDate => Option[String]) {
           else if (year >= 1996) (day == 20) opt "海の日"
           else None
         case AUGUST =>
-          if      (year >= 2021) (day == 11) opt "山の日"
+          if      (year >= 2022) (day == 11) opt "山の日"
+          else if (year == 2021) (day ==  8) opt "山の日"
           else if (year == 2020) (day == 10) opt "山の日"
           else if (year >= 2016) (day == 11) opt "山の日"
           else None
@@ -143,7 +151,8 @@ object Holidays extends (LocalDate => Option[String]) {
             year == 1966 && day == 15 opt "敬老の日"
           }
         case OCTOBER =>
-          if      (year >= 2021) (weekOfMonth == 2) && (d is MONDAY) opt "スポーツの日"
+          if      (year >= 2022) (weekOfMonth == 2) && (d is MONDAY) opt "スポーツの日"
+          else if (year == 2021) None
           else if (year == 2020) None
           else if (year >= 2000) {
             if ((weekOfMonth == 2) && (d is MONDAY)) Some("体育の日")

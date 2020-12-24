@@ -32,13 +32,19 @@ class HolidaysSpec extends AnyFlatSpec with Matchers {
     LocalDate.of(2012, 12, 24).holidayName should equal (Some("振替休日"))
     LocalDate.of(2019,  2, 23).holidayName should equal (None)
     LocalDate.of(2020,  2, 23).holidayName should equal (Some("天皇誕生日"))
-    LocalDate.of(2021,  7, 19).holidayName should equal (Some("海の日"))
     LocalDate.of(2020,  7, 23).holidayName should equal (Some("海の日"))
+    LocalDate.of(2021,  7, 19).holidayName should equal (None)
+    LocalDate.of(2021,  7, 22).holidayName should equal (Some("海の日"))
+    LocalDate.of(2022,  7, 18).holidayName should equal (Some("海の日"))
     LocalDate.of(2020,  7, 24).holidayName should equal (Some("スポーツの日"))
-    LocalDate.of(2021,  8, 11).holidayName should equal (Some("山の日"))
-    LocalDate.of(2020,  8, 11).holidayName should equal (None)
+    LocalDate.of(2021,  7, 23).holidayName should equal (Some("スポーツの日"))
     LocalDate.of(2020,  8, 10).holidayName should equal (Some("山の日"))
-    LocalDate.of(2021, 10, 11).holidayName should equal (Some("スポーツの日"))
+    LocalDate.of(2020,  8, 11).holidayName should equal (None)
+    LocalDate.of(2021,  8,  8).holidayName should equal (Some("山の日"))
+    LocalDate.of(2021,  8, 11).holidayName should equal (None)
+    LocalDate.of(2022,  8, 11).holidayName should equal (Some("山の日"))
+    LocalDate.of(2021, 10, 11).holidayName should equal (None)
+    LocalDate.of(2022, 10, 10).holidayName should equal (Some("スポーツの日"))
     LocalDate.of(2020, 10, 12).holidayName should equal (None)
     LocalDate.of(2019, 10, 14).holidayName should equal (Some("体育の日"))
     LocalDate.of(2018, 12, 23).holidayName should equal (Some("天皇誕生日"))
@@ -76,7 +82,7 @@ class HolidaysSpec extends AnyFlatSpec with Matchers {
       case Holidays(name) => name
       case _              => "平日"
     }
-    
+
     val expected = Seq(
       "平日",
       "昭和の日",

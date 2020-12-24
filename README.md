@@ -17,7 +17,7 @@ http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 Scala 2.11.x, 2.12.x, 2.13.0 に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "6.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "7.0"
 ```
 
 ## Joda-Time と共に使いたい場合

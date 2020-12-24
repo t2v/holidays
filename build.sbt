@@ -1,10 +1,10 @@
 import scala.xml.NodeSeq
 
 val commonSettings = Seq(
-  version := "6.0",
+  version := "7.0",
   organization := "jp.t2v",
-  scalaVersion := "2.12.11",
-  crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.1"),
+  scalaVersion := "2.12.12",
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.1.1" % "test"
@@ -42,7 +42,7 @@ val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
-  crossScalaVersions := Seq("2.11.12", "2.12.10", "2.13.1"),
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
   publishMavenStyle := true,
   publish           := { },
   publishArtifact   := false,
@@ -70,7 +70,4 @@ lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   publishTo         := Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"),
   pomExtra          := NodeSeq.Empty
 ).dependsOn(core)
-
-
-
 

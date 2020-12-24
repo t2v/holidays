@@ -6,6 +6,7 @@ http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 - ※東京五輪 臨時祝日 / 体育の日 改名 対応
 - ※生前退位 / 皇位継承 対応
 - ※2019年 臨時休日 対応
+- ※2021年 東京五輪特措法の改正案 対応
 
 # 導入
 
@@ -22,10 +23,10 @@ libraryDependencies += "jp.t2v" %% "holidays" % "6.0"
 ## Joda-Time と共に使いたい場合
 
 Holidaysの依存に [nscala-time](https://github.com/nscala-time/nscala-time) が含まれなくなったため、個別に nscala-time か joda-time を依存性に追加してください。
-Scala 2.11.x, 2.12.x, 2.13.0 に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.x に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "6.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "7.0"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.22.0"
 ```
 
@@ -132,6 +133,8 @@ Java8 `LocalDate`, `LocalDateTime`, `ZonedDateTime` および Joda-Time `LocalDa
 '_/    (d) 2020年施行の「体育の日の改名」⇒スポーツの日
 '_/    (e) 五輪特措法による2020年の「祝日移動」
 '_/       海の日：7/20(3rd Mon)⇒7/23, スポーツの日:10/12(2nd Mon)⇒7/24, 山の日：8/11⇒8/10
+'_/    (f) 五輪特措法による2021年の「祝日移動」
+'_/       海の日：7/19(3rd Mon)⇒7/22, スポーツの日:10/11(2nd Mon)⇒7/23, 山の日：8/11⇒8/8
 '_/
 '_/  (*1)このマクロを引用するに当たっては、必ずこのコメントも
 '_/      一緒に引用する事とします。

@@ -98,4 +98,12 @@ class HolidaysSpec extends AnyFlatSpec with Matchers {
     actual should equal (expected)
   }
 
+  "core test" should "not have joda dependency in classpath" in {
+    assertThrows[NoClassDefFoundError](
+      LocalDateConverter.jodaLocalDateConverter(null)
+    )
+    assertThrows[NoClassDefFoundError](
+      LocalDateConverter.jodaLocalTimeConverter(null)
+    )
+  }
 }

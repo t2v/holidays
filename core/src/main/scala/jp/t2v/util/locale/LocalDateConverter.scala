@@ -16,32 +16,16 @@ object LocalDateConverter extends LowPriorityLocalDateConverter {
 }
 
 trait LowPriorityLocalDateConverter {
-  import scala.language.experimental.macros
-  implicit def jodaLocalDateConverter[A]: LocalDateConverter[A] = macro LocalDateConverterMacro.joda[A]
-}
-
-private[locale] object LocalDateConverterMacro {
-  import scala.reflect.macros.blackbox
-
-  def joda[A: c.WeakTypeTag](c: blackbox.Context): c.Expr[LocalDateConverter[A]] = {
-    import c.universe._
-    val A = weakTypeTag[A].tpe
-    val expr = A.toString match {
-      case "org.joda.time.LocalDate" =>
-        q"""new jp.t2v.util.locale.LocalDateConverter[$A] {
-          def apply(d: $A) = java.time.LocalDate.of(d.getYear, d.getMonthOfYear, d.getDayOfMonth)
-        }"""
-      case "org.joda.time.DateTime" =>
-        q"""new jp.t2v.util.locale.LocalDateConverter[$A] {
-          def apply(value: $A) = {
-            val d = value.toLocalDate
-            java.time.LocalDate.of(d.getYear, d.getMonthOfYear, d.getDayOfMonth)
-          }
-        }"""
-      case _ =>
-        c.abort(c.enclosingPosition, s"Implicit LocalDateConverter[$A] is missing.")
+  implicit lazy val jodaLocalDateConverter: LocalDateConverter[org.joda.time.LocalDate] =
+    new LocalDateConverter[org.joda.time.LocalDate] {
+      def apply(d: org.joda.time.LocalDate) = java.time.LocalDate.of(d.getYear, d.getMonthOfYear, d.getDayOfMonth)
     }
-    c.Expr[LocalDateConverter[A]](expr)
-  }
 
+  implicit lazy val jodaLocalTimeConverter: LocalDateConverter[org.joda.time.DateTime] =
+    new LocalDateConverter[org.joda.time.DateTime] {
+      def apply(value: org.joda.time.DateTime) = {
+        val d = value.toLocalDate
+        java.time.LocalDate.of(d.getYear, d.getMonthOfYear, d.getDayOfMonth)
+      }
+    }
 }

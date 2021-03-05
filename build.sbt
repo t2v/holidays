@@ -1,5 +1,7 @@
 import scala.xml.NodeSeq
 
+def jodaDependency = "joda-time" % "joda-time" % "2.10.5"
+
 val commonSettings = Seq(
   version := "7.0",
   organization := "jp.t2v",
@@ -17,6 +19,7 @@ val commonSettings = Seq(
     else
       Some("releases"  at nexus + "service/local/staging/deploy/maven2")
   },
+  Test / fork := true,
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },
   pomExtra :=
@@ -53,15 +56,20 @@ lazy val root = (project in file(".")).aggregate(core, joda).settings(
 
 lazy val core = (project in file("core")).settings(commonSettings).settings(
   name := "holidays",
+  Test / fullClasspath ~= { oldPath =>
+    val newPath = oldPath.filterNot(_.data.toString.contains("joda-time"))
+    assert((oldPath.size - newPath.size) == 1, (newPath, oldPath))
+    newPath
+  },
   libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    jodaDependency % Provided
   )
 )
 
 lazy val joda = (project in file("joda")).settings(commonSettings).settings(
   name := "holidays-joda",
   libraryDependencies ++= Seq(
-    "joda-time" % "joda-time" % "2.10.5"
+    jodaDependency % Test
   ),
   publishMavenStyle := true,
   publish           := { },

@@ -3,13 +3,18 @@ import scala.xml.NodeSeq
 def jodaDependency = "joda-time" % "joda-time" % "2.10.5"
 
 val commonSettings = Seq(
-  version := "7.0",
+  version := "7.1",
   organization := "jp.t2v",
-  scalaVersion := "2.12.12",
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
+  scalaVersion := "3.0.0",
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4", "3.0.0"),
+  scalacOptions ++= {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) => Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"/*, "-Yexplicit-nulls"*/)
+      case _            => Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions", "-Xdisable-assertions")
+    }
+  },
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.1.1" % "test"
+    "org.scalatest" %% "scalatest" % "3.2.5" % "test" cross CrossVersion.for3Use2_13
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -19,8 +24,14 @@ val commonSettings = Seq(
     else
       Some("releases"  at nexus + "service/local/staging/deploy/maven2")
   },
+  Test / sources := {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) => Nil // ScalaTest が 3.0.0 対応するまでの暫定
+      case _            => (Test / sources).value
+    }
+  },
   Test / fork := true,
-  publishArtifact in Test := false,
+  Test / publishArtifact  := false,
   pomIncludeRepository := { _ => false },
   pomExtra :=
     <url>https://github.com/t2v/holidays</url>
@@ -45,13 +56,14 @@ val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
-  publishMavenStyle := true,
-  publish           := { },
-  publishArtifact   := false,
-  packagedArtifacts := Map.empty,
-  publishTo         := Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"),
-  pomExtra          := NodeSeq.Empty
+  scalaVersion       := "3.0.0",
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4", "3.0.0"),
+  publishMavenStyle  := true,
+  publish            := { },
+  publishArtifact    := false,
+  packagedArtifacts  := Map.empty,
+  publishTo          := Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"),
+  pomExtra           := NodeSeq.Empty
 )
 
 lazy val core = (project in file("core")).settings(commonSettings).settings(

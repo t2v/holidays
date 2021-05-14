@@ -82,6 +82,7 @@ object Holidays extends (LocalDate => Option[String]) {
 
   def apply(target: LocalDate): Option[String] = {
     def holidayName(d: LocalDate): Option[String] = {
+      assert(祝日法施行 != null)
       if (d < 祝日法施行) return None
       val year = d.getYear
       val month = d.getMonth
@@ -168,6 +169,7 @@ object Holidays extends (LocalDate => Option[String]) {
       }
     }
     def substitute(d: LocalDate): Option[String] = {
+      assert(振替休日施行 != null)
       ((d is MONDAY) && (d >= 振替休日施行) && holidayName(d.minusDays(1)).isDefined) opt "振替休日"
     }
     holidayName(target) orElse substitute(target)

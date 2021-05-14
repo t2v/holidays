@@ -14,7 +14,7 @@ val commonSettings = Seq(
     }
   },
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.2.5" % "test" cross CrossVersion.for3Use2_13
+    "org.scalatest" %% "scalatest" % "3.2.9" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -23,12 +23,6 @@ val commonSettings = Seq(
       Some("snapshots" at nexus + "content/repositories/snapshots")
     else
       Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-  },
-  Test / sources := {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((3, _)) => Nil // ScalaTest が 3.0.0 対応するまでの暫定
-      case _            => (Test / sources).value
-    }
   },
   Test / fork := true,
   Test / publishArtifact  := false,

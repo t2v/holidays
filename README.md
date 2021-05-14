@@ -14,19 +14,19 @@ http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 ## Java8 Date&Time API と共に使いたい場合
 
 以下の記述を `build.sbt` に足してください。
-Scala 2.11.x, 2.12.x, 2.13.x に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.x, 3.0.x に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "7.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "7.1"
 ```
 
 ## Joda-Time と共に使いたい場合
 
 Holidaysの依存に [nscala-time](https://github.com/nscala-time/nscala-time) が含まれなくなったため、個別に nscala-time か joda-time を依存性に追加してください。
-Scala 2.11.x, 2.12.x, 2.13.x に対応しています。
+Scala 2.11.x, 2.12.x, 2.13.x, 3.0.x に対応しています。
 
 ```scala
-libraryDependencies += "jp.t2v" %% "holidays" % "7.0"
+libraryDependencies += "jp.t2v" %% "holidays" % "7.1"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.22.0"
 ```
 
@@ -111,6 +111,35 @@ names == Seq("平日", "昭和の日", "振替休日", "平日", "平日", "憲�
 ```
 
 Java8 `LocalDate`, `LocalDateTime`, `ZonedDateTime` および Joda-Time `LocalDate`, `DateTime` をサポートしています。
+
+## 独自の日時データ型や外部ライブラリの日時型と使う
+
+`LocalDateConverter` という型クラスが用意されています。
+
+```scala
+abstract class LocalDateConverter[A] {
+  def apply(value: A): java.time.LocalDate
+}
+```
+
+独自の日時データ型に対して `LocalDateConverter` の型クラスインスタンスを定義することで、独自の日時データ型からも利用できるようになります。
+
+```scala
+import java.time.LocalDate
+
+case class MyDate(year: Int, month: Int, day: Int)
+object MyDate {
+  given optionApplicative: LocalDateConverter[MyDate] with {
+    def apply(d: MyDate): LocalDate = LocalDate.of(d.yeay, d.month, d.day)
+  }
+}
+```
+
+```scala
+import jp.t2v.util.locale.Implicits._
+
+MyDate(2012, 9, 22).holidayName // Some("秋分の日")
+```
 
 # Copyright
 

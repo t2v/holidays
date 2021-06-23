@@ -129,7 +129,7 @@ import java.time.LocalDate
 
 case class MyDate(year: Int, month: Int, day: Int)
 object MyDate {
-  given optionApplicative: LocalDateConverter[MyDate] with {
+  given LocalDateConverter[MyDate] with {
     def apply(d: MyDate): LocalDate = LocalDate.of(d.yeay, d.month, d.day)
   }
 }

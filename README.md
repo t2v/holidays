@@ -1,4 +1,4 @@
-# 祝日計算 in Scala [![scaladoc](https://javadoc-badge.appspot.com/jp.t2v/holidays_2.12.svg?label=scaladoc)](https://javadoc-badge.appspot.com/jp.t2v/holidays_2.12/jp/t2v/util/locale/index.html?javadocio=true)
+# 祝日計算 in Scala [![scaladoc](https://javadoc.io/badge2/jp.t2v/holidays_3/javadoc.svg)](https://javadoc.io/doc/jp.t2v/holidays_3/latest/api/jp/t2v/util/locale.html)
 
 http://addinbox.sakura.ne.jp/holiday_logic.htm の Scala 移植版です。
 

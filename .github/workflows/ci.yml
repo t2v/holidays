@@ -20,5 +20,5 @@ jobs:
       with:
         java-version: "${{ matrix.java }}"
         distribution: adopt
-    - uses: coursier/cache-action@v5
+    - uses: coursier/cache-action@v6
     - run: sbt -v "+ test"

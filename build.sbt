@@ -1,12 +1,12 @@
 import scala.xml.NodeSeq
 
-def jodaDependency = "joda-time" % "joda-time" % "2.10.5"
+def jodaDependency = "joda-time" % "joda-time" % "2.12.6"
 
 val commonSettings = Seq(
   version := "7.1",
   organization := "jp.t2v",
-  scalaVersion := "3.0.0",
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4", "3.0.0"),
+  scalaVersion := "3.3.1",
+  crossScalaVersions := Seq("2.11.12", "2.12.18", "2.13.12", "3.3.1"),
   scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) => Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"/*, "-Yexplicit-nulls"*/)
@@ -14,7 +14,7 @@ val commonSettings = Seq(
     }
   },
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.2.9" % "test"
+    "org.scalatest" %% "scalatest" % "3.2.17" % "test"
   ),
   publishMavenStyle := true,
   publishTo := {
@@ -50,8 +50,8 @@ val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).aggregate(core, joda).settings(
-  scalaVersion       := "3.0.0",
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4", "3.0.0"),
+  scalaVersion       := "3.3.1",
+  crossScalaVersions := Seq("2.11.12", "2.12.18", "2.13.12", "3.3.1"),
   publishMavenStyle  := true,
   publish            := { },
   publishArtifact    := false,
